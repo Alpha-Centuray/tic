@@ -6,8 +6,8 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import "./style.css"
 
+const ticTacToeArray = new Array(9).fill("")
 const App = () => {
-    const ticTacToeArray = new Array(9).fill("")
     const [isCross, setIsCross] = useState(true);
     const [winMessage, setWinMessage] = useState("");
 
@@ -47,13 +47,22 @@ const App = () => {
         }
         
         // draw condition pending
+        if(!ticTacToeArray.includes("")){
+            setWinMessage("Game is draw");
+        }
         
     }
 
     // changeItem
 
     function changeItem(index){
+        // console.log("Change Item is executed")
         // game over case 
+        if(winMessage){
+            return toast.error("Game is already over");
+        }
+
+
         if(ticTacToeArray[index] != ""){
             return toast.error("Allready filled");
         }
@@ -62,10 +71,12 @@ const App = () => {
              setIsCross(!isCross);
              findWinner();         
         }
+        // console.log(ticTacToeArray)
         
     }
     return (
         <div className="tic">
+            <ToastContainer position="bottom-center" autoClose={5000} />
             <h1 className="top-heading">Tic Tac Toe</h1>
             {
                 winMessage==""? (
@@ -86,7 +97,7 @@ const App = () => {
                {
                 ticTacToeArray.map((value, index)=>(
                     <div onClick={()=>{changeItem(index)}}>
-                        <Icon choice={ticTacToeArray[index]}/>
+                        <Icon displayIcon={ticTacToeArray[index]}/>
                     </div>
                 ))
                }
